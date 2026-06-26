@@ -3,7 +3,7 @@ using OpenAI.Chat;
 using DomainMessage = Chatbot.ChatMessage;
 using SdkMessage = OpenAI.Chat.ChatMessage;
 
-namespace Chatbot;
+namespace Chatbot.Infrastructure.Helpers;
 
 /// <summary>
 /// Maps between our domain ChatMessage type and Azure SDK ChatMessage types.
@@ -11,7 +11,7 @@ namespace Chatbot;
 /// This is the ONLY place in the codebase that knows about both domain types
 /// and Azure SDK types. If Azure changes their SDK, only this file changes.
 /// </summary>
-internal static class ChatMessageMapper
+internal static class AzureChatMessageMapper
 {
     internal static SdkMessage ToSdkMessage(DomainMessage message) =>
         message.Role switch

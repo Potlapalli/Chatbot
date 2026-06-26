@@ -1,5 +1,6 @@
 using Azure.AI.OpenAI;
 using Azure.Identity;
+using Chatbot.Infrastructure.Helpers;
 using OpenAI.Chat;
 using System.ClientModel;
 using System.Runtime.CompilerServices;
@@ -34,7 +35,7 @@ public sealed class AzureOpenAIChatClient : IChatCompletionClient
         CancellationToken ct = default)
     {
         var options = new ChatCompletionOptions { MaxOutputTokenCount = _maxTokens };
-        var sdkMessages = ChatMessageMapper.ToSdkMessages(history).ToList();
+        var sdkMessages = AzureChatMessageMapper.ToSdkMessages(history).ToList();
         var response = await _chatClient.CompleteChatAsync(sdkMessages,options, cancellationToken: ct);
         return response.Value.Content[0].Text;
     }
@@ -45,7 +46,7 @@ public sealed class AzureOpenAIChatClient : IChatCompletionClient
         [EnumeratorCancellation] CancellationToken ct = default)
     {
         var options = new ChatCompletionOptions { MaxOutputTokenCount = _maxTokens };
-        var sdkMessages = ChatMessageMapper.ToSdkMessages(history).ToList();
+        var sdkMessages = AzureChatMessageMapper.ToSdkMessages(history).ToList();
 
         await foreach (var update in _chatClient.CompleteChatStreamingAsync(sdkMessages, options, cancellationToken: ct))
         {
